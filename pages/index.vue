@@ -1,30 +1,33 @@
 <template>
-  <v-layout justify-center align-center>
-    <v-flex xs12 sm8 md6>
-      <v-container>
-        <v-layout>
-          <v-flex xs12 md4>
-            <v-text-field
-              v-model="search"
-              label="Search!!"
-            ></v-text-field>
-          </v-flex>
-          <v-flex xs12 md4>
-            <v-btn color="green" @click="getQiita"><v-icon>search</v-icon></v-btn>
-          </v-flex>
-        </v-layout>
-      </v-container>
+  <v-layout>
+    <v-flex xs12 sm12 >
       <v-card>
-        <v-list three-line>
-          <template v-for="(q,index) in qiita">
-            <v-list-tile>
-              <v-list-tile-content>
-                {{ q.title }}
-              </v-list-tile-content>
-            </v-list-tile>
-          <hr class="my-3">
-          </template>
-        </v-list>
+        <v-card-actions>
+          <v-text-field
+            v-model="search"
+            label="Search!!"
+            class="pr-4"
+          ></v-text-field>
+          <v-btn color="green" @click="getQiita"><v-icon>search</v-icon></v-btn>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+          <hr class="my-3" color="green">
+        <v-container fluid>
+          <v-layout row wrap align-space-around>
+            <v-flex v-for="(q,i) in qiita" :key="q.id" xs4 class="pa-2">
+              <v-card  hover :href="q.url" target="_blank" color="grey darken-2" height="180px">
+                <v-card-title primary-title>
+                  <h4>{{ q.title }}</h4>
+                </v-card-title>
+                <v-card-text class="grey darken-1">
+                  <h5>by {{ q.user.id }}<v-icon small class="pl-3">thumb_up</v-icon> {{ q.likes_count }}</h5>
+                  <ul><li v-for="(tag,i_tag) in q.tags">#{{ tag.name }}</li></ul>
+                  <p class="pt-2 text-truncate">{{ q.body | truncate(120) }}</p>
+                </v-card-text>
+              </v-card>
+            </v-flex>
+          </v-layout>
+        </v-container>
       </v-card>
     </v-flex>
   </v-layout>
@@ -32,16 +35,18 @@
 
 <script>
 import axios from 'axios'
+import Vue2Filters from 'vue2-filters'
 export default {
   components: {
   },
+  mixins: [Vue2Filters.mixin],
   created() {
     this.getQiita() // QiitaAPI呼び出し
   },
   data() {
     return {
       qiita: null,
-      search: null
+      search: ''
     }
   },
   methods: {
@@ -51,8 +56,9 @@ export default {
        headers: { "Content-Type": "application/json" },
        params: {
          page: 1,
-         per_page: 20,
-         query: this.search
+         per_page: 21,
+         sort: 'stock',
+         query: 'body:' + this.search + '+stocks:>20'
        },
        timeout: 15000
       })
@@ -66,3 +72,14 @@ export default {
   }
 }
 </script>
+
+<style>
+ul {
+  padding: 0px;
+}
+li {
+  display: inline;
+  padding-right: 4px;
+  list-style: none;
+}
+</style>

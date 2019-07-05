@@ -1,0 +1,18 @@
+nuxt.js
+
+✨  Generating Nuxt.js project in E:\www\sample_nuxt
+? Project name sample_nuxt
+? Project description My unreal Nuxt.js project
+? Author name wws_mizobuchi
+? Choose the package manager Npm
+? Choose UI framework Vuetify.js
+? Choose custom server framework Express
+? Choose Nuxt.js modules (Press <space> to select, <a> to toggle all, <i> to invert selection)
+? Choose linting tools ESLint
+? Choose test framework Jest
+? Choose rendering mode Universal (SSR)
+
+
+
+
+npm install vue2-filters
